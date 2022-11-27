@@ -47,7 +47,7 @@ public class Test1Example {
 	      random.ints().limit(10).sorted().forEach(System.out::println);
 			
 	      //parallel processing
-	      count = empNames.parallelStream().filter(string -> string.isEmpty()).count();
+	      count = empNames.parallelStream().filter(String::isEmpty).count();
 	      System.out.println("Empty Strings: " + count);
 	   }
 		
