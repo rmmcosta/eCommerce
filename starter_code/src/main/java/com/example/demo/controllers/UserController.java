@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,8 @@ import com.example.demo.model.requests.CreateUserRequest;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+	@Autowired
+	BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -43,6 +46,17 @@ public class UserController {
 	public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
 		User user = new User();
 		user.setUsername(createUserRequest.getUsername());
+		if (createUserRequest.getPassword() == null) {
+			throw new UserBadRequestException("The password is mandatory");
+		}
+		if (createUserRequest.getConfirmPassword() == null) {
+			throw new UserBadRequestException("The confirmation password is mandatory");
+		}
+		if (!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
+			throw new UserBadRequestException("The password and confirmation password must be the same");
+		}
+		//we need to hash the password before saving it
+		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
 		Cart cart = new Cart();
 		cartRepository.save(cart);
 		user.setCart(cart);
