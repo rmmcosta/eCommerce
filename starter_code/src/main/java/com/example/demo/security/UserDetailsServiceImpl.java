@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collections;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -18,6 +18,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         com.example.demo.model.persistence.User dbUser = userRepository.findByUsername(s);
-        return new User(dbUser.getUsername(), dbUser.getPassword(), new ArrayList<>());
+        System.out.println("username:" + dbUser.getUsername());
+        System.out.println("password:" + dbUser.getPassword());
+        return new User(dbUser.getUsername(), dbUser.getPassword(), Collections.emptyList());
     }
 }

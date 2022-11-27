@@ -8,14 +8,20 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Objects;
 
 import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 
@@ -29,8 +35,17 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            User credentials = new ObjectMapper()
-                    .readValue(request.getInputStream(), User.class);
+            /*try {
+                String line;
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+                while ((line = bufferedReader.readLine()) != null) {
+                    System.out.printf("%s\n", line);
+                }
+            } catch (IOException e) {
+                System.err.println("Error: " + e);
+            }*/
+
+            User credentials = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
