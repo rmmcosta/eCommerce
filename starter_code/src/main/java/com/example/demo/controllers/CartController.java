@@ -31,8 +31,7 @@ public class CartController {
     private ItemRepository itemRepository;
 
     @PostMapping("/addToCart")
-    public ResponseEntity<Cart> addToCart(@RequestBody ModifyCartRequest request, @RequestHeader("authorization") String token) {
-        System.out.println(token);
+    public ResponseEntity<Cart> addToCart(@RequestBody ModifyCartRequest request) {
         User user = userRepository.findByUsername(request.getUsername());
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -45,7 +44,7 @@ public class CartController {
         IntStream.range(0, request.getQuantity())
                 .forEach(i -> cart.addItem(item.get()));
         cartRepository.save(cart);
-        return ResponseEntity.ok(cart);
+        return new ResponseEntity<>(cart, HttpStatus.CREATED);
     }
 
     @PostMapping("/removeFromCart")

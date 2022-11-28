@@ -22,46 +22,46 @@ import com.example.demo.model.requests.CreateUserRequest;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private CartRepository cartRepository;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@GetMapping("/id/{id}")
-	public ResponseEntity<User> findById(@PathVariable Long id) {
-		return ResponseEntity.of(userRepository.findById(id));
-	}
-	
-	@GetMapping("/{username}")
-	public ResponseEntity<User> findByUserName(@PathVariable String username) {
-		User user = userRepository.findByUsername(username);
-		return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
-	}
-	
-	@PostMapping("/create")
-	public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
-		User user = new User();
-		user.setUsername(createUserRequest.getUsername());
-		if (createUserRequest.getPassword() == null) {
-			throw new UserBadRequestException("The password is mandatory");
-		}
-		if (createUserRequest.getConfirmPassword() == null) {
-			throw new UserBadRequestException("The confirmation password is mandatory");
-		}
-		if (!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
-			throw new UserBadRequestException("The password and confirmation password must be the same");
-		}
-		//we need to hash the password before saving it
-		user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
-		Cart cart = new Cart();
-		cartRepository.save(cart);
-		user.setCart(cart);
-		userRepository.save(user);
-		return ResponseEntity.ok(user);
-	}
-	
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private CartRepository cartRepository;
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<User> findById(@PathVariable Long id) {
+        return ResponseEntity.of(userRepository.findById(id));
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<User> findByUserName(@PathVariable String username) {
+        User user = userRepository.findByUsername(username);
+        return user == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/create")
+    public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
+        User user = new User();
+        user.setUsername(createUserRequest.getUsername());
+        if (createUserRequest.getPassword() == null) {
+            throw new UserBadRequestException("The password is mandatory");
+        }
+        if (createUserRequest.getConfirmPassword() == null) {
+            throw new UserBadRequestException("The confirmation password is mandatory");
+        }
+        if (!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
+            throw new UserBadRequestException("The password and confirmation password must be the same");
+        }
+        //we need to hash the password before saving it
+        user.setPassword(bCryptPasswordEncoder.encode(createUserRequest.getPassword()));
+        Cart cart = new Cart();
+        cartRepository.save(cart);
+        user.setCart(cart);
+        userRepository.save(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
 }
