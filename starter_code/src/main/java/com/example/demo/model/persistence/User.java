@@ -13,25 +13,29 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 
 @Entity
 @Table(name = "user")
 @Data
+@NoArgsConstructor
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JsonProperty
+	@JsonProperty("id")
 	private long id;
 	
 	@Column(nullable = false, unique = true)
-	@JsonProperty
+	@JsonProperty("username")
 	private String username;
 
-	@NotNull
-	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+	@Column(nullable = false)
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY, value = "password")
 	private String password;
 	
 	@OneToOne(cascade = CascadeType.ALL)
