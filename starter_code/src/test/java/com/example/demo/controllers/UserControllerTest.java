@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class UserControllerTests {
+public class UserControllerTest {
 
     UserController userController;
 
@@ -96,6 +96,15 @@ public class UserControllerTests {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(USERNAME);
         userRequest.setPassword(PASSWORD);
+        userRequest.setConfirmPassword("xpto");
+        userController.createUser(userRequest);
+    }
+
+    @Test(expected = UserBadRequestException.class)
+    public void createUserWithShortPassword() {
+        CreateUserRequest userRequest = new CreateUserRequest();
+        userRequest.setUsername(USERNAME);
+        userRequest.setPassword("1234");
         userRequest.setConfirmPassword("xpto");
         userController.createUser(userRequest);
     }
