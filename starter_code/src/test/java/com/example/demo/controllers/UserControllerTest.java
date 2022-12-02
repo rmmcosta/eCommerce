@@ -80,7 +80,6 @@ public class UserControllerTest {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(USERNAME);
         userRequest.setPassword(PASSWORD);
-        userRequest.setConfirmPassword("");
         userController.createUser(userRequest);
     }
 
@@ -105,7 +104,7 @@ public class UserControllerTest {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(USERNAME);
         userRequest.setPassword("1234");
-        userRequest.setConfirmPassword("xpto");
+        userRequest.setConfirmPassword("1234");
         userController.createUser(userRequest);
     }
 }

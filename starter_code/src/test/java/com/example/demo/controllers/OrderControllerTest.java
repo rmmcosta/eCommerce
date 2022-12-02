@@ -39,7 +39,7 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void submit() {
+    public void submitWithSuccess() {
         ResponseEntity<UserOrder> orderResponseEntity = orderController.submit(USERNAME);
         assertNotNull(orderResponseEntity);
         assertEquals(HttpStatus.CREATED, orderResponseEntity.getStatusCode());
@@ -50,5 +50,19 @@ public class OrderControllerTest {
         ResponseEntity<List<UserOrder>> ordersResponseEntity = orderController.getOrdersForUser(USERNAME);
         assertNotNull(ordersResponseEntity);
         assertEquals(HttpStatus.OK, ordersResponseEntity.getStatusCode());
+    }
+
+    @Test
+    public void submitForUnknownUser() {
+        ResponseEntity<UserOrder> orderResponseEntity = orderController.submit("");
+        assertNotNull(orderResponseEntity);
+        assertEquals(HttpStatus.NOT_FOUND, orderResponseEntity.getStatusCode());
+    }
+
+    @Test
+    public void getOrdersForUnknownUser() {
+        ResponseEntity<List<UserOrder>> ordersResponseEntity = orderController.getOrdersForUser("");
+        assertNotNull(ordersResponseEntity);
+        assertEquals(HttpStatus.NOT_FOUND, ordersResponseEntity.getStatusCode());
     }
 }

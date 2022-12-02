@@ -6,6 +6,9 @@ import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 import com.example.demo.model.requests.CreateUserRequest;
 import com.example.demo.security.SecurityConstants;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +20,7 @@ import static java.lang.String.format;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -39,19 +43,23 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<User> createUser(@RequestBody CreateUserRequest createUserRequest) {
+    public ResponseEntity<User> createUser(@NotNull @RequestBody CreateUserRequest createUserRequest) {
         User user = new User();
         user.setUsername(createUserRequest.getUsername());
         if (createUserRequest.getPassword() == null) {
+            logger.error(format("The password is mandatory %s", createUserRequest));
             throw new UserBadRequestException("The password is mandatory");
         }
         if (createUserRequest.getConfirmPassword() == null) {
+            logger.error(format("The confirmation password is mandatory %s", createUserRequest));
             throw new UserBadRequestException("The confirmation password is mandatory");
         }
         if (!createUserRequest.getPassword().equals(createUserRequest.getConfirmPassword())) {
+            logger.error(format("The password and confirmation password must be the same %s", createUserRequest));
             throw new UserBadRequestException("The password and confirmation password must be the same");
         }
         if (createUserRequest.getPassword().length() < SecurityConstants.PASSWORD_MIN_LENGTH) {
+            logger.error(format("The password must be at least %d chars long %s", SecurityConstants.PASSWORD_MIN_LENGTH, createUserRequest));
             throw new UserBadRequestException(format("The password must be at least %d chars long", SecurityConstants.PASSWORD_MIN_LENGTH));
         }
         //we need to hash the password before saving it
@@ -60,6 +68,7 @@ public class UserController {
         cartRepository.save(cart);
         user.setCart(cart);
         userRepository.save(user);
+        logger.info(format("User %s created with success", user));
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
