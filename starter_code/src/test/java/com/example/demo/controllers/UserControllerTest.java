@@ -5,6 +5,7 @@ import com.example.demo.model.persistence.User;
 import com.example.demo.model.persistence.repositories.CartRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 import com.example.demo.model.requests.CreateUserRequest;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
@@ -61,7 +62,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void createUser() {
+    public void createUser() throws JsonProcessingException {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(USERNAME);
         userRequest.setPassword(PASSWORD);
@@ -76,7 +77,7 @@ public class UserControllerTest {
     }
 
     @Test(expected = UserBadRequestException.class)
-    public void createUserWithNoConfirmPassword() {
+    public void createUserWithNoConfirmPassword() throws JsonProcessingException {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(USERNAME);
         userRequest.setPassword(PASSWORD);
@@ -84,14 +85,14 @@ public class UserControllerTest {
     }
 
     @Test(expected = UserBadRequestException.class)
-    public void createUserWithoutPassword() {
+    public void createUserWithoutPassword() throws JsonProcessingException {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(USERNAME);
         userController.createUser(userRequest);
     }
 
     @Test(expected = UserBadRequestException.class)
-    public void createUserWithPasswordNotEqualToConfirmPassword() {
+    public void createUserWithPasswordNotEqualToConfirmPassword() throws JsonProcessingException {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(USERNAME);
         userRequest.setPassword(PASSWORD);
@@ -100,7 +101,7 @@ public class UserControllerTest {
     }
 
     @Test(expected = UserBadRequestException.class)
-    public void createUserWithShortPassword() {
+    public void createUserWithShortPassword() throws JsonProcessingException {
         CreateUserRequest userRequest = new CreateUserRequest();
         userRequest.setUsername(USERNAME);
         userRequest.setPassword("1234");

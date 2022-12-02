@@ -4,6 +4,9 @@ import com.example.demo.model.persistence.User;
 import com.example.demo.model.persistence.UserOrder;
 import com.example.demo.model.persistence.repositories.OrderRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +31,7 @@ public class OrderController {
 
 
     @PostMapping("/submit/{username}")
-    public ResponseEntity<UserOrder> submit(@PathVariable String username) {
+    public ResponseEntity<UserOrder> submit(@PathVariable String username) throws JsonProcessingException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             logger.info(format("User with the username %s not found", username));
@@ -36,17 +39,25 @@ public class OrderController {
         }
         UserOrder order = UserOrder.createFromCart(user.getCart());
         orderRepository.save(order);
-        logger.info(format("Order %s submitted with success for the user %s", order, username));
+        //ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        //String orderJson = ow.writeValueAsString(order);
+        //logger.info(format("Order %s submitted with success for the user %s", orderJson, username));
+        logger.info(format("Order with total %s submitted with success for the user %s. {\"orderTotal\":\"%.2f\"}", order.getTotal(), username, order.getTotal()));
         return new ResponseEntity<>(order, HttpStatus.CREATED);
     }
 
     @GetMapping("/history/{username}")
-    public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) {
+    public ResponseEntity<List<UserOrder>> getOrdersForUser(@PathVariable String username) throws JsonProcessingException {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             logger.info(format("User with the username %s not found", username));
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(orderRepository.findByUser(user));
+        List<UserOrder> orders = orderRepository.findByUser(user);
+        //ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        //String ordersJson = ow.writeValueAsString(orders);
+        //logger.info(format("User with the username %s has the following orders %s", username, ordersJson));
+        //logger.info(format("Order with total %s submitted with success for the user %s", orders.stream()., username));
+        return ResponseEntity.ok(orders);
     }
 }

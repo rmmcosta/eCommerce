@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <Appender name="com.example.demo" class="com.splunk.logging.HttpEventCollectorLogbackAppender">
+        <url>http://localhost:8000</url>
+        <token>d017ceff-ec2b-410c-b87b-82e54ebc0a5b</token>
+        <index>udacity</index>
+        <disableCertificateValidation>true</disableCertificateValidation>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%msg</pattern>
+        </layout>
+    </Appender>
+    <logger name ="com.example.demo" level="debug">
+        <appender-ref ref="com.example.demo" />
+    </logger>
+</configuration>

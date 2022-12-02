@@ -5,6 +5,7 @@ import com.example.demo.model.persistence.User;
 import com.example.demo.model.persistence.UserOrder;
 import com.example.demo.model.persistence.repositories.OrderRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.coyote.Response;
 import org.aspectj.weaver.ast.Or;
 import org.junit.Before;
@@ -39,28 +40,28 @@ public class OrderControllerTest {
     }
 
     @Test
-    public void submitWithSuccess() {
+    public void submitWithSuccess() throws JsonProcessingException {
         ResponseEntity<UserOrder> orderResponseEntity = orderController.submit(USERNAME);
         assertNotNull(orderResponseEntity);
         assertEquals(HttpStatus.CREATED, orderResponseEntity.getStatusCode());
     }
 
     @Test
-    public void getOrdersForUser() {
+    public void getOrdersForUser() throws JsonProcessingException {
         ResponseEntity<List<UserOrder>> ordersResponseEntity = orderController.getOrdersForUser(USERNAME);
         assertNotNull(ordersResponseEntity);
         assertEquals(HttpStatus.OK, ordersResponseEntity.getStatusCode());
     }
 
     @Test
-    public void submitForUnknownUser() {
+    public void submitForUnknownUser() throws JsonProcessingException {
         ResponseEntity<UserOrder> orderResponseEntity = orderController.submit("");
         assertNotNull(orderResponseEntity);
         assertEquals(HttpStatus.NOT_FOUND, orderResponseEntity.getStatusCode());
     }
 
     @Test
-    public void getOrdersForUnknownUser() {
+    public void getOrdersForUnknownUser() throws JsonProcessingException {
         ResponseEntity<List<UserOrder>> ordersResponseEntity = orderController.getOrdersForUser("");
         assertNotNull(ordersResponseEntity);
         assertEquals(HttpStatus.NOT_FOUND, ordersResponseEntity.getStatusCode());
