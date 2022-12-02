@@ -1,6 +1,5 @@
 package com.example.demo.security;
 
-import com.auth0.jwt.JWT;
 import com.example.demo.SampleUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -20,9 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import java.util.Date;
 
-import static com.auth0.jwt.algorithms.Algorithm.HMAC512;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

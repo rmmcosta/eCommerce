@@ -23,4 +23,9 @@ public class SampleUser {
         user.setCart(cart);
         return user;
     }
+
+    public static class LoginUser {
+        public String username;
+        public String password;
+    }
 }

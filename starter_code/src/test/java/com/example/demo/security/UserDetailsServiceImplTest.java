@@ -7,7 +7,6 @@ import com.example.demo.model.persistence.repositories.UserRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
