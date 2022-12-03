@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.coyote.Response;
 import org.aspectj.weaver.ast.Or;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Ignore
 public class OrderControllerTest {
     private final UserRepository userRepository=mock(UserRepository.class);
 

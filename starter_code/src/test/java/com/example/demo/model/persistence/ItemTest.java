@@ -1,10 +1,12 @@
 package com.example.demo.model.persistence;
 
 import com.example.demo.SampleItem;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+@Ignore
 public class ItemTest {
 
     @Test

@@ -4,6 +4,7 @@ import com.example.demo.SampleUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
@@ -23,6 +24,7 @@ import java.util.Collections;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Ignore
 public class JWTAuthenticationFilterTest {
 
     private final HttpServletResponse httpServletResponse = mock(HttpServletResponse.class);

@@ -7,6 +7,7 @@ import com.example.demo.model.persistence.repositories.ItemRepository;
 import com.example.demo.model.persistence.repositories.UserRepository;
 import com.example.demo.model.requests.ModifyCartRequest;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+@Ignore
 public class CartControllerTest {
     private final UserRepository userRepository = mock(UserRepository.class);
     private final CartRepository cartRepository = mock(CartRepository.class);
